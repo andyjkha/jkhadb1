@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: white; /* 배경 색상을 하얀색으로 설정 */
             margin: 40px;
         }
         .container {
@@ -31,34 +32,61 @@
             font-size: 12px;
             color: grey;
         }
+        /* 입력란과 출력란의 높이를 5줄로 조정 */
+        textarea {
+            width: 100%;
+            padding: 10px;
+            height: 120px; /* 5줄이 보이도록 설정 */
+            resize: none; /* 크기 조정 방지 */
+        }
+        #copyBtn {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        /* '단어 섞기' 버튼 아래로 3줄 공백 추가 */
+        .spacer {
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>문장 단어 섞기</h1>
 
+        <!-- 입력 필드 -->
         <div class="input-field">
             <label class="label" for="inputSentence">문장 입력</label>
-            <input type="text" id="inputSentence" style="width: 100%; padding: 10px;" placeholder="여기에 문장을 입력하세요">
+            <textarea id="inputSentence" placeholder="여기에 문장을 입력하세요"></textarea>
             <span id="inputWordCount" class="word-count"></span>
         </div>
 
-        <button id="shuffleBtn">Shuffle</button>
+        <!-- '단어 섞기' 버튼 -->
+        <button id="shuffleBtn">단어 섞기</button>
 
+        <!-- 3줄 공백 -->
+        <div class="spacer"></div>
+
+        <!-- 출력 필드 -->
         <div class="output-field">
             <label class="label" for="outputSentence">결과 문장</label>
-            <input type="text" id="outputSentence" style="width: 100%; padding: 10px;" readonly>
+            <textarea id="outputSentence" readonly></textarea>
             <span id="outputWordCount" class="word-count"></span>
+            <button id="copyBtn">복사하기</button> <!-- 복사 버튼 추가 -->
         </div>
     </div>
 
     <script>
+        // 입력 필드와 출력 필드, 버튼 요소들 가져오기
         const inputSentence = document.getElementById('inputSentence');
         const outputSentence = document.getElementById('outputSentence');
         const shuffleBtn = document.getElementById('shuffleBtn');
         const inputWordCount = document.getElementById('inputWordCount');
         const outputWordCount = document.getElementById('outputWordCount');
+        const copyBtn = document.getElementById('copyBtn');
 
+        // 단어 섞기 함수
         function shuffleWords(sentence) {
             const words = sentence.split(' ');
             for (let i = words.length - 1; i > 0; i--) {
@@ -68,23 +96,33 @@
             return words.join(' ');
         }
 
+        // 입력 필드에 문장이 입력될 때 단어 수 계산
         inputSentence.addEventListener('input', () => {
             const wordCount = inputSentence.value.trim().split(/\s+/).filter(word => word.length > 0).length;
             inputWordCount.textContent = `단어 수: ${wordCount}`;
         });
 
+        // '단어 섞기' 버튼 클릭 시 단어 섞기
         shuffleBtn.addEventListener('click', () => {
             const sentence = inputSentence.value.trim();
             if (sentence) {
                 const shuffledSentence = shuffleWords(sentence);
                 outputSentence.value = shuffledSentence;
 
+                // 출력 필드의 단어 수 표시
                 const outputWords = shuffledSentence.trim().split(/\s+/).filter(word => word.length > 0).length;
                 outputWordCount.textContent = `단어 수: ${outputWords}`;
             } else {
                 outputSentence.value = '';
                 outputWordCount.textContent = '';
             }
+        });
+
+        // 복사하기 버튼 클릭 시 출력 문장 복사
+        copyBtn.addEventListener('click', () => {
+            outputSentence.select();
+            document.execCommand('copy');
+            alert('결과 문장이 복사되었습니다!');
         });
     </script>
 </body>
