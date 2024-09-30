@@ -69,7 +69,7 @@
         </div>
 
         <!-- '단어 섞기' 버튼 -->
-        <button id="shuffleBtn">단어 섞기</button>
+        <button id="shuffleBtn" class="btn">단어 섞기</button>
 
         <!-- 3줄 공백 -->
         <div class="spacer"></div>
@@ -134,4 +134,9 @@
         // 복사하기 버튼 클릭 시 출력 문장 복사
         copyBtn.addEventListener('click', () => {
             outputSentence.select();
-            document.execCommand('copy​⬤
+            document.execCommand('copy');
+            alert('결과 문장이 복사되었습니다!');
+        });
+    </script>
+</body>
+</html>
